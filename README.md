@@ -1,4 +1,4 @@
-# registrationpage
+# registration
 
 1.1 System requriements:
 - Node.js 
