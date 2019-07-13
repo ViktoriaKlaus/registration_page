@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 	<meta charset="utf-8">
+		<title>Registration</title>
+
+		<link href="https://fonts.googleapis.com/css?family=Sacramento&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Alice&display=swap" rel="stylesheet">
+
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+		<style>
+			body{
+	
+				font-size: 25px;
+				text-align: center;
+				background-color:#ebebe3;
+				margin: 0;
+			}
+
+			#form{
+				font-family: 'Open Sans Condensed', sans-serif;
+				font-size: 20px;
+				letter-spacing: 3px;
+			}
+
+			.h1{
+				font-family: 'Sacramento', cursive;
+				font-size: 100px;
+
+			}
+
+			.input {
+			  width: 50%;
+			  border: 1px solid #2b2b28;
+			  border-radius: 4px;
+			 outline: none ! important;  
+			 height:25px;
+			 letter-spacing: 2px;
+
+			}
+
+			.input[type=text]:focus {
+			  	border: 2px solid #555;
+			}
+
+			.btn {
+				background-color: #f6f6f6;
+				font-size: 24px;
+				padding: 2px 70px;
+				font-family: 'Sacramento', cursive;
+				letter-spacing: 1px;
+				box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+				transition: 0.3s;
+				cursor: pointer;
+				outline: none ! important;  
+				border: 2px solid #555;
+			}
+
+			.btn:hover {opacity: 1}
+
+			.checkmark[type='checkbox']{
+				font-size: 50px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+		<div>
+			<h1 class="h1">Registration page</h1>
+		</div>
+
+		<form id="form" method="POSTs" action="credentials">
+		
+			First name:<br>
+			<input class="input" type="text" name="firstname" id="firstname" >
+			<br>
+			Last name:<br>
+			<input class="input" type="text" name="lastname" id="lastname" >
+			<br>
+
+			E-mail:<br>
+			<input class="input" type="email" name="email" id="email" >
+			<br>
+
+			Password:<br>
+			<input class="input" 
+			maxlength="20" 
+			minlength="8" 
+			type="password"  
+			id="password" 
+			name="password">
+
+			<br>	
+			<br>
+
+			<input class="checkmark" type="checkbox" onclick="myFunction()"> Show Password
+			<p>How did you find out about us:</p>
+
+			<select class="input" name="socialmedia">
+				<option value="instagram">Instagram</option>
+				<option value="fb">Facebook</option>
+				<option value="ubahn">U-bahn</option>
+				<option value="friends">Friends/Relatives</option>
+			</select>
+			<br><br>
+			<input class="btn" id="btn" type="submit" value="Submit" action="window.html">
+		</form>
+	
+		<script>
+			let element = document.querySelector('#email');
+			console.log(element);
+			//Show password function
+			function myFunction() {
+				var x = document.getElementById("password");
+				if (x.type === "password") {
+					x.type = "text";
+				} else {
+					x.type = "password";
+				}
+			}
+
+			let btn = document.querySelector('#btn');
+
+			// client-side user validation 
+			btn.addEventListener("click", function(event){
+
+				event.preventDefault();
+
+				var fname = document.getElementById("firstname").value;
+				var lname = document.getElementById("lastname").value;
+				//check if E-mail has @ in value
+				var email = document.getElementById("email").value.indexOf("@");
+				var pass = document.getElementById("password").value;
+				
+
+				if (!fname) {
+					alert("Please, check your firstname field");
+					return false;
+				}
+
+				if (!lname) {
+					alert("Please, check your lastname field");
+					return false;
+				}
+
+				if (email == -1) {
+					alert("Not a valid e-mail!");
+					return false;
+					  
+				}
+
+				if (pass <= 8){
+					alert("Your password is too short")
+				}
+
+				async(email,lname,fname,pass);
+
+			});
+
+			/**
+			* Send credentials to server
+			*/
+			function async(email,lastname,firstname,password){
+
+				$.ajax({
+					method:'post',
+					url:'credentials',
+					data:{
+						email: email,
+						lastname: lastname,
+						firstname: firstname,
+						password: password
+
+					}
+				})
+				.done(function(data){
+					console.log(data);
+					window.location.assign("dashboard");
+
+				})
+				.fail(function(data){
+					console.log('some problem')
+				})	
+			}
+		</script>
+	</body>
+
